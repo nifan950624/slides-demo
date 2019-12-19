@@ -19,7 +19,7 @@
       transform: translateX(-590px);
     }
 
-    .ctrl {
+    .btn {
       text-align: center;
     }
 
@@ -41,10 +41,7 @@
       <img src="./img/90b9978279fa5283.jpg!q90!cc_590x470.webp" alt="" width="100%">
     </div>
   </div>
-  <div class="ctrl">
-    <button id="previous">上一张</button>
-    <button id="next">下一张</button>
-  </div>
+
   <div class="btn">
     <button>1</button>
     <button>2</button>
@@ -59,48 +56,34 @@
   var images = $('.images>img');
   var firstimage = images.eq(images.length - 1).clone(true);
   var lastimage = images.eq(0).clone(true);
-  $('.images').append(lastimage);
-  $('.images').prepend(firstimage);
+  var timer,
+    current = 0;
 
-  var current = 0;
+  // 把复制的图片插前插后
+  $('.images')
+    .append(lastimage)
+    .prepend(firstimage);
 
-  var timer = setInterval(() => {
-    console.log(current)
-    goToSlide(current + 1)
-  }, 2000)
-
-  $('#contorl').on('mouseenter', () => {
-    window.clearInterval(timer)
-  }).on('mouseleave', () => {
+  window.onload = () => {
     timer = setInterval(() => {
       goToSlide(current + 1)
     }, 2000)
-  })
 
+    $('#contorl').on('mouseenter', () => {
+      window.clearInterval(timer)
+    }).on('mouseleave', () => {
+      timer = setInterval(() => {
+        goToSlide(current + 1)
+      }, 2000)
+    })
 
-  // document.addEventListener('visibilitychange', () => {
-  //     if (document.hidden) {
-  //         window.clearInterval(timer)
-  //     } else {
-  //         var timer = setInterval(() => {
-  //             goToSlide(current + 1)
-  //         }, 2000)
-  //     }
-  // })
+    $('.btn').on('click', 'button', function (e) {
+      var index = $(e.currentTarget).index();
+      goToSlide(index)
+    })
+  }
 
-  $(previous).on('click', () => {
-    goToSlide(current - 1)
-  })
-  $(next).on('click', () => {
-    gotoslide(current + 1)
-  })
-
-
-  $('.btn').on('click', 'button', function (e) {
-    var index = $(e.currentTarget).index();
-    goToSlide(index)
-  })
-
+  // 轮播函数
   function goToSlide(index) {
     //判断index
     if (index > images.length - 1) {
@@ -138,6 +121,5 @@
       current = index
     }
   }
-
 </script>
 </html>
