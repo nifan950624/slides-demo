@@ -15,7 +15,7 @@
     .images {
       display: flex;
       height: 100%;
-      transition: all 1s;
+      transition: all 1s ease;
       transform: translateX(-590px);
     }
 
@@ -51,7 +51,7 @@
   </div>
 </div>
 </body>
-<script src="./jquery-3.4.1.js"></script>
+<script src="./jquery.min.js"></script>
 <script>
   var images = $('.images>img');
   var firstimage = images.eq(images.length - 1).clone(true);
@@ -82,6 +82,19 @@
       goToSlide(index)
     })
   }
+
+  // 监视页面标签页是否处于激活状态
+  window.addEventListener('visibilitychange', () => {
+    if (document.visibilityState === 'visible') {
+      timer = setInterval(() => {
+        goToSlide(current + 1)
+      }, 2000)
+    } else if (document.visibilityState === 'hidden') {
+      if (timer) {
+        clearInterval(timer)
+      }
+    }
+  })
 
   // 轮播函数
   function goToSlide(index) {
